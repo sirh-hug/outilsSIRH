@@ -6,7 +6,7 @@
 \usage{
 distinct_dates(
   data,
-  ...,
+  groups,
   variable_date_debut,
   variable_date_fin,
   tronquer_debut = FALSE,
@@ -18,15 +18,15 @@ distinct_dates(
 \arguments{
 \item{data}{une table contenant au moins une colonne date de debut et une colonne date de fin (voir autres arugments)}
 
-\item{...}{le(s) (differents) groupe(s) dont il faut tenir compte variable d'identification (ex: Matricule, Statut)}
+\item{groups}{le(s) (differents) groupe(s) dont il faut tenir compte variable d'identification (ex: Matricule, Statut)}
 
 \item{variable_date_debut}{une seule variable qui indique la date de debut (debut agent, debut absences, ...)}
 
 \item{variable_date_fin}{une seule variable qui indique la date de fin (fin agent, fin absences, ...)}
 
-\item{tronquer_debut}{a venir}
+\item{tronquer_debut}{Date entre guillemets "2018-01-01" dans le format "YYYY-MM-JJ" pour tronquer les dates de debut (utile pour le calcul du nombre de jours)}
 
-\item{tronquer_fin}{a venir}
+\item{tronquer_fin}{Date entre guillemets "2018-01-01" dans le format "YYYY-MM-JJ" pour tronquer les dates de fin (utile pour le calcul du nombre de jours)}
 
 \item{tolerance_weekend}{si TRUE, alors tolere une difference de jours deux lignes si cette difference est uniquement sur le weekend (date de fin un vendredi/samedi/dimanche et date de debut suivante est un lundi)}
 
@@ -39,6 +39,8 @@ une table reduite
 Reduire les lignes d'une table selon la date de debut et la date de fin. Utiles pour analyser les differentes saisies d'absences ou les differents contrats agents qui se suivent, etc.
 }
 \examples{
-distinct_dates(data, MATRICULE, STATUT, variable_date_debut = `date debut agent`, variable_date_fin = `date fin agent`, tolerance_nb_jours = 31)
+distinct_dates(data, MATRICULE, variable_date_debut = `date debut agent`, variable_date_fin = `date fin agent`, tolerance_nb_jours = 31)
+# Multiple variables de groupes
+distinct_date(data, vars(MATRICULE, STATUT), date_debut, date_fin )
 
 }
