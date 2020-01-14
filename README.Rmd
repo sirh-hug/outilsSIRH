@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "outilsSIRH"
 output: github_document
 ---
 
@@ -7,16 +7,23 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## GitHub Documents
+## Description
 
-This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+Ceci est juste un package avec les fonctions souvent utilisées par l'auteur.
 
 ## Installation
 
-Si `Rtools` n'est pas installé sur le PC (c'est un logiciel, pas un package !), alors il faut télécharger les télécharger le .ZIP depuis github.
+Si `Rtools` n'est pas installé sur le PC (c'est un logiciel, pas un package !), alors il faut 
+
+* télécharger les télécharger le .ZIP depuis github.
+* dans RStudio, aller dans Tools > Install packages > Install from .zip
+
+## Premiers pas
+
 
 ```{r}
+library(outilsSIRH)
 
-
+# couleurs_hug("principales")
 ```
 
