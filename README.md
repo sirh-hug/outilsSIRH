@@ -20,5 +20,7 @@ Premiers pas
 ``` r
 library(outilsSIRH)
 
-# couleurs_hug("principales")
+couleurs_hug("principales")
 ```
+
+    ## [1] "#a0d0ab" "#00b0af" "#3abff0" "#72c5c3" "#585757"

@@ -1,9 +1,9 @@
 #' Couleurs officielles HUG
 #'
 #' @param type character. "principales", "secondaires bleu" ou "secondaires rouge"
+#' @export
 #'
-#'
-#'
+#' @example couleurs_hug("principales")
 
 couleurs_hug <- function(type = "principales"){
   if( type == "principales" ){

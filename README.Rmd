@@ -24,6 +24,6 @@ Si `Rtools` n'est pas installé sur le PC (c'est un logiciel, pas un package !),
 ```{r}
 library(outilsSIRH)
 
-# couleurs_hug("principales")
+couleurs_hug("principales")
 ```
 
