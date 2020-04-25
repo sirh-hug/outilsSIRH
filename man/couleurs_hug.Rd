@@ -12,3 +12,6 @@ couleurs_hug(type = "principales")
 \description{
 Couleurs officielles HUG
 }
+\examples{
+couleurs_hug("principales")
+}
