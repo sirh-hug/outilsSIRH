@@ -15,3 +15,5 @@ LazyData: true
 RoxygenNote: 7.1.0
 URL: https://github.com/sirh-hug/outilsSIRH
 BugReports: https://github.com/sirh-hug/outilsSIRH/issues
+Suggests: 
+    testthat

@@ -5,7 +5,7 @@
 #' @param df a data.frame
 #' @param from variable date
 #' @param to variable date
-#' @param .data a strin
+#' @param .data a string
 #'
 #' @export
 #'
@@ -16,6 +16,9 @@
 #' duplicate_rows(X, from, to)
 
 duplicate_rows <- function(df, from, to, .new_name = ".date"){
+  if( missing(df) | missing(from) | missing(to) ) stop("all three parameters must be given")
+  if(!is.data.frame(df)){stop("df must be a data.frame")}
+
   x_from <- dplyr::pull(df, {{from}})
   x_to <- dplyr::pull(df, {{to}})
   if( !(lubridate::is.Date(x_from) & lubridate::is.Date(x_to))  ){
