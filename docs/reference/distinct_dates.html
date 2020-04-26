@@ -178,18 +178,18 @@
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>X</span>)</div><div class='output co'>#&gt;   id      debut        fin
 #&gt; 1  1 2020-01-01 2020-01-31
 #&gt; 2  1 2020-03-01 2020-03-31</div><div class='input'>
-<span class='fu'>distinct_dates</span>(<span class='no'>X</span>, <span class='no'>id</span>, <span class='no'>debut</span>, <span class='no'>fin</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 2 x 5</span><span>
-#&gt; </span><span style='color: #555555;'># Groups:   id [1]</span><span>
+<span class='fu'>distinct_dates</span>(<span class='no'>X</span>, <span class='no'>id</span>, <span class='no'>debut</span>, <span class='no'>fin</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 5
+#&gt; # Groups:   id [1]
 #&gt;      id .id_group_case debut      fin        .row_number
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      
-#&gt; </span><span style='color: #555555;'>1</span><span>     1              1 2020-01-01 2020-01-31 1          
-#&gt; </span><span style='color: #555555;'>2</span><span>     1              2 2020-03-01 2020-03-31 2          </div><div class='input'>
-<span class='fu'>distinct_dates</span>(<span class='no'>X</span>, <span class='no'>id</span>, <span class='no'>debut</span>, <span class='no'>fin</span>, <span class='kw'>tolerance_n_days</span> <span class='kw'>=</span> <span class='fl'>31</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1 x 5</span><span>
-#&gt; </span><span style='color: #555555;'># Groups:   id [1]</span><span>
+#&gt;   &lt;int&gt;          &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;      
+#&gt; 1     1              1 2020-01-01 2020-01-31 1          
+#&gt; 2     1              2 2020-03-01 2020-03-31 2          </div><div class='input'>
+<span class='fu'>distinct_dates</span>(<span class='no'>X</span>, <span class='no'>id</span>, <span class='no'>debut</span>, <span class='no'>fin</span>, <span class='kw'>tolerance_n_days</span> <span class='kw'>=</span> <span class='fl'>31</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 5
+#&gt; # Groups:   id [1]
 #&gt;      id .id_group_case debut      fin        .row_number
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      
-#&gt; </span><span style='color: #555555;'>1</span><span>     1              1 2020-01-01 2020-03-31 1;2        </div><div class='input'>
-</div></span></pre>
+#&gt;   &lt;int&gt;          &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;      
+#&gt; 1     1              1 2020-01-01 2020-03-31 1;2        </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
