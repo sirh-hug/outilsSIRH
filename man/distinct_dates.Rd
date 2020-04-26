@@ -40,12 +40,14 @@ une table reduite
 Reduire les lignes d'une table selon la date de debut et la date de fin. Utiles pour analyser les differentes saisies d'absences ou les differents contrats agents qui se suivent, etc.
 }
 \examples{
+library(outilsSIRH)
 X <- data.frame(id = 1:1,
   debut = as.Date.character("2020-01-01") + c(0, 60),
   fin = as.Date.character("2020-01-01") + c(30, 90))
 head(X)
 
 distinct_dates(X, id, debut, fin)
+
 distinct_dates(X, id, debut, fin, tolerance_n_days = 31)
 
 }

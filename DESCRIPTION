@@ -1,19 +1,20 @@
 Package: outilsSIRH
 Type: fonctions utiles pour le SIRH
 Title: Analyser les donnees SIRH
-Version: 0.0.1
+Version: 0.0.0.900
 Author: ismail muller
 Maintainer: ismail muller <muller.ismail@gmail.com>
 Description: Ce package contient differentes fonctions utiles pour l'analyse de donnees du SIRH. 
     Ce package n'est absolument pas officiel et il est surtout une aide pour son auteur.
-Imports:
-  tidyverse,
-  lubridate,
-  rio
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.0
 URL: https://github.com/sirh-hug/outilsSIRH
 BugReports: https://github.com/sirh-hug/outilsSIRH/issues
+Imports:
+    tidyverse,
+    lubridate,
+    magrittr,
+    rio
 Suggests: 
     testthat
