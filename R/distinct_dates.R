@@ -1,77 +1,78 @@
-#' @title Reduit les lignes de dates
-#' @description Reduire les lignes d'une table selon la date de debut et la date de fin. Utiles pour analyser les differentes saisies d'absences ou les differents contrats agents qui se suivent, etc.
+#' Reduit les lignes de dates
+#'
+#' Reduire les lignes d'une table selon la date de debut et la date de fin. Utiles pour analyser les differentes saisies d'absences ou les differents contrats agents qui se suivent, etc.
 #'
 #' @param data une table contenant au moins une colonne date de debut et une colonne date de fin (voir autres arugments)
 #' @param groups le(s) (differents) groupe(s) dont il faut tenir compte variable d'identification (ex: Matricule, Statut)
-#' @param variable_date_debut une seule variable qui indique la date de debut (debut agent, debut absences, ...)
-#' @param variable_date_fin une seule variable qui indique la date de fin (fin agent, fin absences, ...)
-#' @param tronquer_debut Date entre guillemets "2018-01-01" dans le format "YYYY-MM-JJ" pour tronquer les dates de debut (utile pour le calcul du nombre de jours)
-#' @param tronquer_fin Date entre guillemets "2018-01-01" dans le format "YYYY-MM-JJ" pour tronquer les dates de fin (utile pour le calcul du nombre de jours)
+#' @param from une seule variable qui indique la date de debut (debut agent, debut absences, ...)
+#' @param to une seule variable qui indique la date de fin (fin agent, fin absences, ...)
+#' @param tronquer_debut Date entre guillemets `ymd("2018-01-01")` dans le format "YYYY-MM-JJ" pour tronquer les dates de debut (utile pour le calcul du nombre de jours)
+#' @param tronquer_fin Date entre guillemets `ymd("2018-01-01")` dans le format "YYYY-MM-JJ" pour tronquer les dates de fin (utile pour le calcul du nombre de jours)
 #' @param tolerance_weekend si TRUE, alors tolere une difference de jours deux lignes si cette difference est uniquement sur le weekend (date de fin un vendredi/samedi/dimanche et date de debut suivante est un lundi)
-#' @param tolerance_nb_jours default 1. Nombre de jours de tolerance entre la date de fin et la prochaine date de debut (par exemple 31 jours pour les contrats agents ou 1 jour pour les absences a la suite)
+#' @param tolerance_n_days default 1. Nombre de jours de tolerance entre la date de fin et la prochaine date de debut (par exemple 31 jours pour les contrats agents ou 1 jour pour les absences a la suite)
 #'
 #' @return une table reduite
 #' @examples
-#' distinct_dates(data, MATRICULE, variable_date_debut = `date debut agent`, variable_date_fin = `date fin agent`, tolerance_nb_jours = 31)
+#' distinct_dates(data, MATRICULE, from = `date debut agent`, to = `date fin agent`, tolerance_n_days = 31)
 #' # Multiple variables de groupes
 #' distinct_date(data, vars(MATRICULE, STATUT), date_debut, date_fin )
 #'
 #' @export
 
-distinct_dates <- function(data,
-                           groups,
-                           variable_date_debut,
-                           variable_date_fin,
-                           tronquer_debut = FALSE,
-                           tronquer_fin = FALSE,
-                           tolerance_weekend = TRUE,
-                           tolerance_nb_jours = 1){
-  require(dplyr)
-  require(magrittr)
-  require(lubridate)
+distinct_dates <- function(data, groups, from, to,
+                           tronquer_debut = NULL, tronquer_fin = NULL,
+                           tolerance_weekend = TRUE, tolerance_n_days = 1,
+                           add_days = FALSE){
+  # param check
+  if( missing(data) | missing(groups) |
+      missing(from) | missing(to) ){stop("Missing parameters")}
 
-  # check les parametres
-  tronquer_debut <- lubridate::ymd(  ifelse(tronquer_debut==FALSE, "9999-12-31", tronquer_debut) )
-  tronquer_fin <- lubridate::ymd(  ifelse(tronquer_fin==FALSE, "1000-12-31", tronquer_fin) )
+  if(!is.data.frame(data)){stop("data must be a data.frame")}
+
+  if( !lubridate::is.Date(dplyr::pull(data, {{from}}) ) |
+      !lubridate::is.Date(dplyr::pull(data, {{to}}) ) ){
+    stop("from & to must be dates")}
 
   # fonction interne
-  jour_de_la_semaine <- function(x){
-    # Fonction qui extrait le jour de la date, de 1 (lundi) à 7 (dimanche)
-    lubridate::wday(x, week_start = 1)
-  }
-
-  paste_collapse <- function(x){
-    paste0(unique(x), collapse = ";")
-  }
-
+  paste_collapse <- function(x){base::paste0(base::unique(x), collapse = ";")}
 
   # faire la reduction
   data_preparee <- data %>%
-    mutate( ligne_id = row_number() ) %>%
-    mutate_at(.vars = vars({{variable_date_debut}}, {{variable_date_fin}}), lubridate::ymd) %>%
-    mutate_at( vars({{variable_date_debut}}),  function(x) if_else(x <= tronquer_debut, tronquer_debut, x) ) %>%
-    mutate_at( vars({{variable_date_fin}}),  function(x) if_else(x >= tronquer_fin, tronquer_fin, x) ) %>%
-    group_by( !!!groups ) %>%
-    arrange( {{variable_date_debut}}, {{variable_date_fin}}) %>%
-    mutate( ligne_id_groupes = row_number(),
-            temp_start_id = case_when(
-              ligne_id_groupes == 1 ~ 0,
-              ({{variable_date_debut}} - lag({{variable_date_fin}})) <= tolerance_nb_jours ~ 0,
-              tolerance_weekend & ( jour_de_la_semaine({{variable_date_debut}}) == 1 & ({{variable_date_debut}} - lag({{variable_date_fin}})) <= 3  ) ~ 0,
-              TRUE ~ 1),
-            id_reduction = cumsum( as.numeric(temp_start_id) )) %>%
-    group_by( id_reduction, add = TRUE)
+    dplyr::mutate( .row_number = dplyr::row_number() ) %>%
+    # tronquer debut
+    { if(!is.null(tronquer_debut)){
+      dplyr::mutate_at(., dplyr::vars({{from}}), ~ base::pmax(.x, tronquer_debut) )
+      } else {.} } %>%
+    # tronquer fin
+    { if(!is.null(tronquer_debut)){
+      dplyr::mutate_at(., dplyr::vars({{to}}), ~ base::pmin(.x, tronquer_fin) )
+      } else {.} } %>%
+    # group
+    dplyr::group_by( !!!rlang::enquos(groups) ) %>%
+    # arrange
+    dplyr::arrange( {{from}}, {{to}} ) %>%
+    # define starting period
+    dplyr::mutate( .id_group_case = dplyr::case_when(
+                     dplyr::row_number() == 1 ~ 0,
+                     ({{from}} - dplyr::lag({{to}})) <= tolerance_n_days ~ 0,
+                     tolerance_weekend & ( lubridate::wday({{from}},  week_start = 1) == 1 & ({{from}} - dplyr::lag({{to}})) <= 3  ) ~ 0,
+                     TRUE ~ 1),
+                   .id_group_case = base::cumsum( base::as.numeric(.id_group_case) ) + 1) %>%
+    dplyr::group_by( .id_group_case, add = TRUE)
 
   reduction <- data_preparee %>%
-    summarize( min_date_debut = min({{variable_date_debut}}), # on prend la 1ere date de debut
-               max_date_fin = max({{variable_date_fin}}),  # la derniere date de fin
-               liste_lignes = paste_collapse(ligne_id)) %>%
-    mutate( jours_entre = max_date_fin - min_date_debut + 1,
-            jours_ecart_ligne_precedente = min_date_debut - lag(max_date_fin) )
+    dplyr::summarize( {{from}} := base::min({{from}}), # on prend la 1ere date de debut
+                      {{to}} := base::max({{to}}),  # la derniere date de fin
+                      .row_number = paste_collapse(.row_number)) %>%
+    {if(add_days){
+      dplyr::mutate(., .days = to - from + 1,
+                     .days_diff_lag = from - dplyr::lag(to) )
+      } else {.}}
+
   autre_info <- data_preparee %>%
-    summarize_all(paste_collapse)
+    dplyr::select( -.row_number, - {{from}}, - {{to}}) %>%
+    dplyr::summarize_all(paste_collapse)
 
-  return( full_join(reduction, autre_info) )
-
+  return( dplyr::full_join(reduction, autre_info,
+                           by = dplyr::intersect(names(reduction), names(autre_info)) ) )
 }
-

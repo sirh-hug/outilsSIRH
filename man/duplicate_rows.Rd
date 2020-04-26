@@ -13,7 +13,7 @@ duplicate_rows(df, from, to, .new_name = ".date")
 
 \item{to}{variable date}
 
-\item{.data}{a strin}
+\item{.data}{a string}
 }
 \description{
 Utile pour avoir

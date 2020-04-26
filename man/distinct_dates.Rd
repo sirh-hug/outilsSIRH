@@ -9,8 +9,8 @@ distinct_dates(
   groups,
   variable_date_debut,
   variable_date_fin,
-  tronquer_debut = FALSE,
-  tronquer_fin = FALSE,
+  tronquer_debut = NULL,
+  tronquer_fin = NULL,
   tolerance_weekend = TRUE,
   tolerance_nb_jours = 1
 )
@@ -24,9 +24,9 @@ distinct_dates(
 
 \item{variable_date_fin}{une seule variable qui indique la date de fin (fin agent, fin absences, ...)}
 
-\item{tronquer_debut}{Date entre guillemets "2018-01-01" dans le format "YYYY-MM-JJ" pour tronquer les dates de debut (utile pour le calcul du nombre de jours)}
+\item{tronquer_debut}{Date entre guillemets `ymd("2018-01-01")` dans le format "YYYY-MM-JJ" pour tronquer les dates de debut (utile pour le calcul du nombre de jours)}
 
-\item{tronquer_fin}{Date entre guillemets "2018-01-01" dans le format "YYYY-MM-JJ" pour tronquer les dates de fin (utile pour le calcul du nombre de jours)}
+\item{tronquer_fin}{Date entre guillemets `ymd("2018-01-01")` dans le format "YYYY-MM-JJ" pour tronquer les dates de fin (utile pour le calcul du nombre de jours)}
 
 \item{tolerance_weekend}{si TRUE, alors tolere une difference de jours deux lignes si cette difference est uniquement sur le weekend (date de fin un vendredi/samedi/dimanche et date de debut suivante est un lundi)}
 
