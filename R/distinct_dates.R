@@ -13,9 +13,13 @@
 #'
 #' @return une table reduite
 #' @examples
-#' distinct_dates(data, MATRICULE, from = `date debut agent`, to = `date fin agent`, tolerance_n_days = 31)
-#' # Multiple variables de groupes
-#' distinct_date(data, vars(MATRICULE, STATUT), date_debut, date_fin )
+#' X <- data.frame(id = 1:1,
+#'   debut = as.Date.character("2020-01-01") + c(0, 60),
+#'   fin = as.Date.character("2020-01-01") + c(30, 90))
+#' head(X)
+#'
+#' distinct_dates(X, id, debut, fin)
+#' distinct_dates(X, id, debut, fin, tolerance_n_days = 31)
 #'
 #' @export
 

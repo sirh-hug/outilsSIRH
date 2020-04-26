@@ -7,12 +7,13 @@
 distinct_dates(
   data,
   groups,
-  variable_date_debut,
-  variable_date_fin,
+  from,
+  to,
   tronquer_debut = NULL,
   tronquer_fin = NULL,
   tolerance_weekend = TRUE,
-  tolerance_nb_jours = 1
+  tolerance_n_days = 1,
+  add_days = FALSE
 )
 }
 \arguments{
@@ -20,9 +21,9 @@ distinct_dates(
 
 \item{groups}{le(s) (differents) groupe(s) dont il faut tenir compte variable d'identification (ex: Matricule, Statut)}
 
-\item{variable_date_debut}{une seule variable qui indique la date de debut (debut agent, debut absences, ...)}
+\item{from}{une seule variable qui indique la date de debut (debut agent, debut absences, ...)}
 
-\item{variable_date_fin}{une seule variable qui indique la date de fin (fin agent, fin absences, ...)}
+\item{to}{une seule variable qui indique la date de fin (fin agent, fin absences, ...)}
 
 \item{tronquer_debut}{Date entre guillemets `ymd("2018-01-01")` dans le format "YYYY-MM-JJ" pour tronquer les dates de debut (utile pour le calcul du nombre de jours)}
 
@@ -30,7 +31,7 @@ distinct_dates(
 
 \item{tolerance_weekend}{si TRUE, alors tolere une difference de jours deux lignes si cette difference est uniquement sur le weekend (date de fin un vendredi/samedi/dimanche et date de debut suivante est un lundi)}
 
-\item{tolerance_nb_jours}{default 1. Nombre de jours de tolerance entre la date de fin et la prochaine date de debut (par exemple 31 jours pour les contrats agents ou 1 jour pour les absences a la suite)}
+\item{tolerance_n_days}{default 1. Nombre de jours de tolerance entre la date de fin et la prochaine date de debut (par exemple 31 jours pour les contrats agents ou 1 jour pour les absences a la suite)}
 }
 \value{
 une table reduite
@@ -39,8 +40,12 @@ une table reduite
 Reduire les lignes d'une table selon la date de debut et la date de fin. Utiles pour analyser les differentes saisies d'absences ou les differents contrats agents qui se suivent, etc.
 }
 \examples{
-distinct_dates(data, MATRICULE, variable_date_debut = `date debut agent`, variable_date_fin = `date fin agent`, tolerance_nb_jours = 31)
-# Multiple variables de groupes
-distinct_date(data, vars(MATRICULE, STATUT), date_debut, date_fin )
+X <- data.frame(id = 1:1,
+  debut = as.Date.character("2020-01-01") + c(0, 60),
+  fin = as.Date.character("2020-01-01") + c(30, 90))
+head(X)
+
+distinct_dates(X, id, debut, fin)
+distinct_dates(X, id, debut, fin, tolerance_n_days = 31)
 
 }
