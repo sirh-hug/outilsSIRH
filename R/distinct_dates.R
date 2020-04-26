@@ -13,6 +13,7 @@
 #'
 #' @return une table reduite
 #' @examples
+#' library(outilsSIRH)
 #' X <- data.frame(id = 1:1,
 #'   debut = as.Date.character("2020-01-01") + c(0, 60),
 #'   fin = as.Date.character("2020-01-01") + c(30, 90))
@@ -59,7 +60,7 @@ distinct_dates <- function(data, groups, from, to,
     dplyr::mutate( .id_group_case = dplyr::case_when(
                      dplyr::row_number() == 1 ~ 0,
                      ({{from}} - dplyr::lag({{to}})) <= tolerance_n_days ~ 0,
-                     tolerance_weekend & ( lubridate::wday({{from}},  week_start = 1) == 1 & ({{from}} - dplyr::lag({{to}})) <= 3  ) ~ 0,
+                     tolerance_weekend & ( lubridate::wday({{from}}, week_start = 1) == 1 & ({{from}} - dplyr::lag({{to}})) <= 3  ) ~ 0,
                      TRUE ~ 1),
                    .id_group_case = base::cumsum( base::as.numeric(.id_group_case) ) + 1) %>%
     dplyr::group_by( .id_group_case, add = TRUE)
